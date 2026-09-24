@@ -1,2 +1,3 @@
 # CS425-Senior-Project
-Big ballers only
+Kyle Kaiser, Kobe Kaiser, Miles Rasmussen 
+UNR senior project
