@@ -1,0 +1,45 @@
+services:
+  nextcloud:
+    image: nextcloud:apache
+    container_name: nextcloud
+    restart: unless-stopped
+
+    ports:
+      - "8080:80"
+
+    environment:
+      SQLITE_DATABASE: nextcloud
+      NEXTCLOUD_ADMIN_USER: ${NC_ADMIN_USER:-admin}
+      NEXTCLOUD_ADMIN_PASSWORD: ${NC_ADMIN_PASSWORD:?Set NC_ADMIN_PASSWORD in .env}
+
+    volumes:
+      - nextcloud_data:/var/www/html
+
+    networks:
+      - cloud_network
+
+  tailscale:
+    image: tailscale/tailscale:stable
+    container_name: tailscale
+    hostname: cloud-server
+    restart: unless-stopped
+
+    environment:
+      TS_AUTHKEY: ${TS_AUTHKEY:-}
+      TS_STATE_DIR: /var/lib/tailscale
+      TS_USERSPACE: "true"
+      TS_AUTH_ONCE: "true"
+
+    volumes:
+      - tailscale_data:/var/lib/tailscale
+
+    networks:
+      - cloud_network
+
+volumes:
+  nextcloud_data:
+  tailscale_data:
+
+networks:
+  cloud_network:
+    driver: bridge
