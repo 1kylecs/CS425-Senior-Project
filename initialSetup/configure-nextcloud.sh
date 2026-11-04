@@ -153,3 +153,9 @@ configure_tailscale_domain() {
     add_trusted_domain "$hostname"
 }
 
+# when directly executed, display currently trusted domains since I am too lazy to remember the command
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+    echo "Current Nextcloud trusted domains:"
+
+    docker exec -u www-data nextcloud php occ config:system:get trusted_domains
+fi
