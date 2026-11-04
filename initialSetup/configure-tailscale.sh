@@ -29,6 +29,16 @@ check_requirements() {
         echo "Error: Tailscale container is not running."
         exit 1
     fi
+
+
+    # ensure nextcloud config script available
+    # needed to add Tailscale hostname to trusted domains
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+    if [[ ! -f "$SCRIPT_DIR/configure-nextcloud.sh" ]]; then
+        echo "Error: configure-nextcloud.sh not found"
+        return 1
+    fi
 }
 
 # Run Tailscale commands inside the Docker container.
@@ -167,6 +177,9 @@ main() {
     echo
     echo "Checking Tailscale Serve..."
     ts serve status || return 1
+
+    source "$SCRIPT_DIR/configure-nextcloud.sh"
+    configure_tailscale_domain || return 1
 
     local hostname
     hostname=$(get_status | jq -r '.Self.DNSName // empty') || return 1
