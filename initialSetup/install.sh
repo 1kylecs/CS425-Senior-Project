@@ -32,7 +32,7 @@ echo "-------------------------------------------------------"
 # Update the package index and install the tools needed to
 # download Docker's signing key and verify its packages.
 apt-get update
-apt-get install -y ca-certificates curl jq
+apt-get install -y ca-certificates curl jq iproute2
 
 echo ""
 echo "-------------------------------------------------------"
@@ -158,4 +158,4 @@ docker compose --env-file "$SCRIPT_DIR/default-creds.env" \
      -f "$SCRIPT_DIR/compose.yaml" ps
 
 echo ""
-echo "Nextcloud web interface: https://localhost:8080"
+echo "Nextcloud web interface: http://localhost:8080"

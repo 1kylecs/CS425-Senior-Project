@@ -9,25 +9,27 @@ LOGIN_TIMEOUT=300
 POLL_INTERVAL=3
 SERVE_RETRIES=3
 
-# Require root permissions for Docker commands.
-if [[ $EUID -ne 0 ]]; then
-    echo "Error: Run this script with sudo."
-    exit 1
-fi
-
-# Verify required commands are installed.
-for cmd in docker jq; do
-    if ! command -v "$cmd" >/dev/null 2>&1; then
-        echo "Error: $cmd is required."
+check_requirements() {
+    # Require root permissions for Docker commands.
+    if [[ $EUID -ne 0 ]]; then
+        echo "Error: Run this script with sudo."
         exit 1
     fi
-done
 
-# Ensure the Tailscale container is running.
-if [[ "$(docker inspect -f '{{.State.Running}}' "$CONTAINER" 2>/dev/null)" != "true" ]]; then
-    echo "Error: Tailscale container is not running."
-    exit 1
-fi
+    # Verify required commands are installed.
+    for cmd in docker jq; do
+        if ! command -v "$cmd" >/dev/null 2>&1; then
+            echo "Error: $cmd is required."
+            exit 1
+        fi
+    done
+
+    # Ensure the Tailscale container is running.
+    if [[ "$(docker inspect -f '{{.State.Running}}' "$CONTAINER" 2>/dev/null)" != "true" ]]; then
+        echo "Error: Tailscale container is not running."
+        exit 1
+    fi
+}
 
 # Run Tailscale commands inside the Docker container.
 ts() {
@@ -158,52 +160,29 @@ configure_serve() {
 
 # Run the complete Tailscale setup process.
 main() {
-    echo "================================"
-    echo "     Tailscale Configuration"
-    echo "================================"
+    check_requirements || return 1
+    configure_login || return 1
+    configure_serve || return 1
 
-    # Authenticate the server, then configure HTTPS access.
-    configure_login
-    configure_serve
-
-    # Display the active Serve configuration.
     echo
     echo "Checking Tailscale Serve..."
-    ts serve status
+    ts serve status || return 1
 
-    # Retrieve the MagicDNS hostname for the server's HTTPS URL.
     local hostname
-    hostname=$(get_status | jq -r '.Self.DNSName // empty')
+    hostname=$(get_status | jq -r '.Self.DNSName // empty') || return 1
     hostname="${hostname%.}"
 
     if [[ -z "$hostname" ]]; then
         echo "Error: Could not determine Tailscale hostname."
-        exit 1
+        return 1
     fi
 
-    # Use configure-nextcloud.sh to add hostname to nextcloud
-    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
-    if [[ ! -f "$SCRIPT_DIR/configure-nextcloud.sh" ]]; then
-        echo "Error: configure-nextcloud.sh not found"
-        exit 1
-    fi
-
-    source "$SCRIPT_DIR/configure-nextcloud.sh"
-    configure_tailscale_domain
-
-
-    # Display the address users will use to access Nextcloud.
     echo
-    echo "================================"
-    echo "      Setup Complete!"
-    echo "================================"
-    echo
+    echo "Setup Complete!"
     echo "Your Nextcloud HTTPS address:"
     echo "https://$hostname"
-    echo
-    echo "Devices must be connected to your Tailscale network."
 }
+
 
 # Run setup only when this script is executed directly.
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
