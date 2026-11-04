@@ -4,6 +4,7 @@ set -euo pipefail
 
 # Configuration
 CONTAINER="tailscale"
+TAILSCALE_HOSTNAME="mycloud"
 LOGIN_TIMEOUT=300
 POLL_INTERVAL=3
 SERVE_RETRIES=3
@@ -57,7 +58,14 @@ configure_login() {
 
     # Run authentication in the background so we can display
     # the login URL and monitor the connection independently.
-    ts up --accept-dns=false --timeout=5m >"$login_log" 2>&1 &
+
+    ts up \
+       --hostname="$TAILSCALE_HOSTNAME"\
+       --accept-dns=false \
+       --timeout=5m \
+       >"$login_log" 2>&1 &
+
+
     login_pid=$!
 
     local elapsed=0
