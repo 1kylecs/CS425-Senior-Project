@@ -26,7 +26,7 @@ fi
 
 echo ""
 echo "-------------------------------------------------------"
-echo "[1/8] Updating packages and installing dependencies..."
+echo "[1/9] Updating packages and installing dependencies..."
 echo "-------------------------------------------------------"
 
 # Update the package index and install the tools needed to
@@ -36,7 +36,7 @@ apt-get install -y ca-certificates curl
 
 echo ""
 echo "-------------------------------------------------------"
-echo "[2/8] Configuring Docker's package repository..."
+echo "[2/9] Configuring Docker's package repository..."
 echo "-------------------------------------------------------"
 
 # Read the Ubuntu release codename to select correct
@@ -68,7 +68,7 @@ EOF
 
 echo ""
 echo "-------------------------------------------------------"
-echo "[3/8] Installing Docker Engine and Docker Compose..."
+echo "[3/9] Installing Docker Engine and Docker Compose..."
 echo "-------------------------------------------------------"
 
 # Refresh the package index to include Docker's repository.
@@ -86,7 +86,7 @@ apt-get install -y \
 
 echo ""
 echo "-------------------------------------------------------"
-echo "[4/8] Starting Docker service..."
+echo "[4/9] Starting Docker service..."
 echo "-------------------------------------------------------"
 
 # Start Docker immediately and configure it to start
@@ -95,7 +95,7 @@ systemctl enable --now docker
 
 echo ""
 echo "-------------------------------------------------------"
-echo "[5/8] Verifying Docker installation..."
+echo "[5/9] Verifying Docker installation..."
 echo "-------------------------------------------------------"
 
 # Confirm that Docker Engine is installed and its daemon is responding.
@@ -105,7 +105,7 @@ docker compose version
 
 echo ""
 echo "-------------------------------------------------------"
-echo "[6/8] Installation complete!"
+echo "[6/9] Docker installed, check version..."
 echo "-------------------------------------------------------"
 
 # Display installed versions for troubleshooting and verification.
@@ -114,7 +114,7 @@ docker compose version
 
 echo ""
 echo "-------------------------------------------------------"
-echo "[7/8] Starting Nextcloud and Tailscale..."
+echo "[7/9] Starting Nextcloud and Tailscale..."
 echo "-------------------------------------------------------"
 
 
@@ -137,12 +137,24 @@ docker compose \
 
 echo ""
 echo "-------------------------------------------------------"
-echo "[8/8] Installation complete!"
+echo "[8/9] Set Nextcloud's trusted IP ports"
+echo "-------------------------------------------------------"
+
+if [[ ! -f "$SCRIPT_DIR/configure-nextcloud.sh" ]]; then
+    echo "Error: configure-nextcloud.sh not found"
+    exit 1
+fi
+
+bash "$SCRIPT_DIR/configure-nextcloud.sh"
+
+
+echo ""
+echo "-------------------------------------------------------"
+echo "[9/9] Installation complete!"
 echo "-------------------------------------------------------"
 
 # Display the running containers.
 docker compose -f "$SCRIPT_DIR/compose.yaml" ps
-
 echo ""
 echo "Nextcloud AIO and Tailscale have been started."
 echo "Nextcloud AIO setup: https://localhost:8080"
