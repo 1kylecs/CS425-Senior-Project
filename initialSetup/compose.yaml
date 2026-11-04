@@ -25,7 +25,6 @@ services:
     restart: unless-stopped
 
     environment:
-      TS_AUTHKEY: ${TS_AUTHKEY:-}
       TS_STATE_DIR: /var/lib/tailscale
       TS_USERSPACE: "true"
       TS_AUTH_ONCE: "true"

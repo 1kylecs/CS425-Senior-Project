@@ -154,7 +154,8 @@ echo "[9/9] Installation complete!"
 echo "-------------------------------------------------------"
 
 # Display the running containers.
-docker compose -f "$SCRIPT_DIR/compose.yaml" ps
+docker compose --env-file "$SCRIPT_DIR/default-creds.env" \
+     -f "$SCRIPT_DIR/compose.yaml" ps
+
 echo ""
-echo "Nextcloud AIO and Tailscale have been started."
-echo "Nextcloud AIO setup: https://localhost:8080"
+echo "Nextcloud web interface: https://localhost:8080"
