@@ -26,17 +26,17 @@ fi
 
 echo ""
 echo "-------------------------------------------------------"
-echo "[1/9] Updating packages and installing dependencies..."
+echo "Updating packages and installing dependencies..."
 echo "-------------------------------------------------------"
 
 # Update the package index and install the tools needed to
 # download Docker's signing key and verify its packages.
 apt-get update
-apt-get install -y ca-certificates curl
+apt-get install -y ca-certificates curl jq iproute2
 
 echo ""
 echo "-------------------------------------------------------"
-echo "[2/9] Configuring Docker's package repository..."
+echo "Configuring Docker's package repository..."
 echo "-------------------------------------------------------"
 
 # Read the Ubuntu release codename to select correct
@@ -68,7 +68,7 @@ EOF
 
 echo ""
 echo "-------------------------------------------------------"
-echo "[3/9] Installing Docker Engine and Docker Compose..."
+echo "Installing Docker Engine and Docker Compose..."
 echo "-------------------------------------------------------"
 
 # Refresh the package index to include Docker's repository.
@@ -86,7 +86,7 @@ apt-get install -y \
 
 echo ""
 echo "-------------------------------------------------------"
-echo "[4/9] Starting Docker service..."
+echo "Starting Docker service..."
 echo "-------------------------------------------------------"
 
 # Start Docker immediately and configure it to start
@@ -95,7 +95,7 @@ systemctl enable --now docker
 
 echo ""
 echo "-------------------------------------------------------"
-echo "[5/9] Verifying Docker installation..."
+echo "Verifying Docker installation..."
 echo "-------------------------------------------------------"
 
 # Confirm that Docker Engine is installed and its daemon is responding.
@@ -105,7 +105,7 @@ docker compose version
 
 echo ""
 echo "-------------------------------------------------------"
-echo "[6/9] Docker installed, check version..."
+echo "Docker installed, check version..."
 echo "-------------------------------------------------------"
 
 # Display installed versions for troubleshooting and verification.
@@ -114,7 +114,7 @@ docker compose version
 
 echo ""
 echo "-------------------------------------------------------"
-echo "[7/9] Starting Nextcloud and Tailscale..."
+echo "Starting Nextcloud and Tailscale..."
 echo "-------------------------------------------------------"
 
 
@@ -137,7 +137,7 @@ docker compose \
 
 echo ""
 echo "-------------------------------------------------------"
-echo "[8/9] Set Nextcloud's trusted IP ports"
+echo "Set Nextcloud's trusted LAN IPs"
 echo "-------------------------------------------------------"
 
 if [[ ! -f "$SCRIPT_DIR/configure-nextcloud.sh" ]]; then
@@ -145,16 +145,17 @@ if [[ ! -f "$SCRIPT_DIR/configure-nextcloud.sh" ]]; then
     exit 1
 fi
 
-bash "$SCRIPT_DIR/configure-nextcloud.sh"
-
+source "$SCRIPT_DIR/configure-nextcloud.sh"
+configure_LAN_domain
 
 echo ""
 echo "-------------------------------------------------------"
-echo "[9/9] Installation complete!"
+echo "Installation complete!"
 echo "-------------------------------------------------------"
 
 # Display the running containers.
-docker compose -f "$SCRIPT_DIR/compose.yaml" ps
+docker compose --env-file "$SCRIPT_DIR/default-creds.env" \
+     -f "$SCRIPT_DIR/compose.yaml" ps
+
 echo ""
-echo "Nextcloud AIO and Tailscale have been started."
-echo "Nextcloud AIO setup: https://localhost:8080"
+echo "Nextcloud web interface: http://localhost:8080"

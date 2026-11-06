@@ -1,4 +1,5 @@
 services:
+
   nextcloud:
     image: nextcloud:apache
     container_name: nextcloud
@@ -21,20 +22,26 @@ services:
   tailscale:
     image: tailscale/tailscale:stable
     container_name: tailscale
-    hostname: cloud-server
     restart: unless-stopped
 
+    # Starts the tailscale daemon to keep running, and waiting for auth
+    # otherwise it restarts after 1 minute, and falls into a boot loop
+    entrypoint: ["tailscaled"]
+    command:
+        - "--tun=userspace-networking"
+        - "--statedir=/var/lib/tailscale"
+        - "--socket=/var/run/tailscale/tailscaled.sock"
+
     environment:
-      TS_AUTHKEY: ${TS_AUTHKEY:-}
       TS_STATE_DIR: /var/lib/tailscale
       TS_USERSPACE: "true"
+      TS_ACCEPT_DNS: "true"
       TS_AUTH_ONCE: "true"
 
     volumes:
       - tailscale_data:/var/lib/tailscale
 
-    networks:
-      - cloud_network
+    network_mode: "service:nextcloud"
 
 volumes:
   nextcloud_data:
