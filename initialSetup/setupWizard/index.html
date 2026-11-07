@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Personal Cloud Server Setup</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="script.js" defer></script> <!-- Wait for HTML to finish before loading JS-->
+    </head>
+
+    <body>
+        <main class="setup-container">
+            <header>
+                <h1>Personal Cloud Server Setup</h1>
+                <p>Let's configure your personal cloud server!</p>
+            </header>
+
+            <section class="setup-card" id="account-step">
+                <p class="step-label">Step 1 of 2</p>
+                <h2>Administrator Account</h2>
+                <p>Create the administrator account that you will use to manage your server.</p>
+
+                <form id="account-form">
+                    <label for="username">Username</label>
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Enter username"
+                        autocomplete="username"
+                        required
+                    >
+                    
+                    <label for="password">Password</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter password"
+                        autocomplete="new-password"
+                        required
+                    >
+
+                    <label for="confirm-password">
+                        Confirm Password
+                    </label>
+                    <input
+                        type="password"
+                        id="confirm-password"
+                        name="confirm-password"
+                        placeholder="Confirm password"
+                        autocomplete="new-password"
+                        required
+                    >
+
+                    <p id="error-message" role="alert"></p>
+
+                    <button type="submit" id="continue-button">
+                        Continue
+                    </button>
+                </form>
+            </section>
+
+            <!--Step 2, confirm admin account details-->
+            <section class="setup-card" id="install-step" hidden>
+                <p class="step-label">Step 2 of 2</p>
+
+                <h2>Confirm Administrator Account</h2>
+
+                <p>
+                    Review your account details below to finish setting up your server.
+                </p>
+
+                <div class="install-summary">
+                    <h3>Account Summary</h3>
+
+                    <p>
+                        <strong>Administrator:</strong>
+                        <span id="summary-username"></span>
+                    </p>
+
+                    <p>
+                        <strong>Cloud Storage:</strong> Nextcloud
+                    </p>
+                </div>
+
+                <p id="install-status" role="status">
+                    Ready to create administrator account.
+                </p>
+
+                <div class="navigation-buttons">
+                    <button type="button" id="install-back-button">
+                        Back
+                    </button>
+
+                    <button type="button" id="install-button">
+                        Create Administrator Account
+                    </button>
+                </div>
+            </section>
+        </main>
+    </body>
+</html>

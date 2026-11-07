@@ -1,0 +1,13 @@
+# Local administrator credentials
+server/admin-account.json
+
+# Environment variables and secrets
+.env
+.env.*
+*.env
+
+# Node.js dependencies
+node_modules/
+
+# Debug logs
+*.log

@@ -1,0 +1,108 @@
+/*page stlying*/
+body {
+    font-family: Arial, sans-serif;
+    background-color: beige;
+    margin: 0;
+    color: black;
+}
+
+/*top nav bar*/
+header {
+    background-color: white;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    font-size: 22px;
+    margin: 0;
+}
+
+/*logout button*/
+#logout-button {
+    background-color: lightblue;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 18px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#logout-button:hover {
+    background-color: royalblue;
+}
+
+/*main dashbaord content*/
+main {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+main h2 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+main > p {
+    color: gray;
+    margin-bottom: 30px;
+}
+
+/*dashboard card*/
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 100%), 1fr);
+    gap: 20px;
+}
+
+.dashboard-card {
+    background-color: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.dashboard-card h3 {
+    margin-top: 0;
+    font-size: 20px;
+}
+
+.dashboard-card p {
+    color: gray;
+    line-height: 1.5;
+}
+
+/*open files link*/
+#files-link {
+    display: inline-block;
+    background-color: lightblue;
+    color: white;
+    text-decoration: none;
+    padding: 10px 16px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+#files-link:hover {
+    background-color: royalblue;
+}
+
+/*small screens*/
+@media (max-width: 600px) {
+    header {
+        padding: 15px 20px;
+    }
+
+    header h1{
+        font-size: 18px;
+    }
+
+    main{
+        margin-top: 25px;
+    }
+}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width", initial-scale="1.0">
+        <title>Personal Cloud Server Login</title>
+        <link rel="stylesheet" href="./login.css">
+        <script src="/login.js" defer></script>
+    </head>
+
+    <body>
+        <main class="login-container">
+            <h1>Personal Cloud Server</h1>
+            <p>Sign in to view the dashboard</p>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input 
+                        type="text"
+                        id="username"
+                        name="username"
+                        autocomplete="username"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        autocomplete="current-password"
+                        required
+                    >
+                </div>
+
+                <button type="submit" id="login-button">
+                    Log in
+                </button>
+
+                <!--Display message to user when trying to log in-->
+                <p id="login-status" role="status" aria-live="polite"></p>
+            </form>
+        </main>
+    </body>
+</html>

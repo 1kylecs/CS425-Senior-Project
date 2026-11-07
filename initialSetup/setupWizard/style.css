@@ -1,0 +1,173 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: beige;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.setup-container {
+    width: 100%;
+    max-width: 550px;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    color: black;
+    margin-bottom: 10px;
+}
+
+header p {
+    color: cadetblue;
+}
+
+.setup-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0,08);
+}
+
+.step-label {
+    color: grey;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.setup-card h2 {
+    margin-bottom: 10px;
+}
+
+.setup-card > p {
+    line-height: 1.5;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 8 px;
+}
+
+input {
+    padding: 12px;
+    margin-bottom: 18px;
+    border: 1 px solid black;
+    border-radius: 6 px;
+    font-size: 16px;
+}
+
+input:focus {
+    outline: 2px solid royalblue;
+    border-color: transparent;
+}
+
+button {
+    background-color: royalblue;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 13px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: royalblue;
+}
+
+#error-message {
+    color: red;
+    font-size: 14px;
+    min-height: 18px;
+}
+
+/* Hide inactive setup screens*/
+[hidden] {
+    display: none !important;
+}
+
+.vpn-status {
+    background-color: beige;
+    border: 1px solid black;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 20px 0;
+}
+
+.vpn-status h3 {
+    margin-top: 0;
+    color: royalblue;
+}
+
+.vpn-status p {
+    margin-bottom: 0;
+    line-height: 1.5;
+}
+
+/*Nav buttons*/
+.navigation-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.navigation-buttons button {
+    flex: 1;
+}
+
+#back-button {
+    background-color: #6699CC;
+}
+
+#back-button:hover {
+    background-color: royalblue;
+}
+
+.install-summary {
+    background-color: beige;
+    border: 1 px solid black;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 20px 0;
+}
+
+.install-summary h3 {
+    margin-top: 0;
+    color: royalblue;
+}
+
+.install-summary p {
+    margin-bottom:  10px;
+    line-height: 1.5;
+}
+
+#install-status {
+    margin: 20px 0;
+    color: #6699CC;
+    font-weight: bold;
+}
+
+#install-back-button {
+    background-color: #6699CC;
+}
+
+#install-back-button:hover {
+    background-color: royalblue;
+}
