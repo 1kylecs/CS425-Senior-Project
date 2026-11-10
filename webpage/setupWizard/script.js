@@ -85,3 +85,7 @@ installButton.addEventListener("click", async function(){
         installBackButton.disabled = false;
     }
 });
+
+const nextcloudLink = document.getElementById("nextcloud-link");
+
+nextcloudLink.href = `${window.location.protocol}//${window.location.hostname}:8080`;

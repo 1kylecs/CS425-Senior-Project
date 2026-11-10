@@ -335,7 +335,7 @@ const server = http.createServer(async (req, res) => {
         const filePath = path.join(
             __dirname,
             "..",
-            "initialSetup",
+            "webpage",
             "setupWizard",
             requestedFile[0])
 
