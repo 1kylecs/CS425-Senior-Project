@@ -46,7 +46,7 @@ async function createNextcloudAdministrator(username, password) {
     }
 
     //validate the username before passing it to Nextcloud
-    if (!/^[a-zA-Z0-9_.-]+$/.test(username)) {
+    if (!/^[a-zA-Z0-9_.-]+$/.test(username)) { //validate that it contains only allowed characters with regex
         throw new Error("Invalid Nextcloud username.");
     }
 

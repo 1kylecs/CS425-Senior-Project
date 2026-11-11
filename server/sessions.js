@@ -1,5 +1,4 @@
 const crypto = require("node:crypto");
-const { create } = require("node:domain");
 
 //store active sessions in mem
 const sessions = new Map();

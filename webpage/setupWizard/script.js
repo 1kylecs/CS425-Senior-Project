@@ -19,22 +19,14 @@ accountForm.addEventListener("submit", function(event){
 
     errorMessage.textContent = "";
 
-    if (username.length === 0){
-        errorMessage.textContent = "Please enter a username.";
+    const validationError = validateAccount(username, password, confirmPassword);
+
+    if(validationError){
+        errorMessage.textContent = validationError;
+
         return;
     }
-
-    if (password.length < 8){
-        errorMessage.textContent = "Password must be at least 8 characters in length.";
-        return;
-    }
-
-    //Make sure passwords match
-    if (password !== confirmPassword){
-        errorMessage.textContent = "Passwords do not match.";
-        return;
-    }
-
+    
     summaryUsername.textContent = username;
 
     accountStep.hidden = true;

@@ -5,35 +5,22 @@ const path = require("node:path");
 const webpageFolder = path.join(__dirname, "../webpage");
 const fsPromise = require("node:fs/promises");
 
-const { 
+const { getSessionToken } = require("./cookies");
+const { validateAccount } = require("../webpage/setupWizard/validation");
+const {
     createAdministrator,
     verifyAdministrator,
     administratorExists
 } = require("./accounts");
-const { 
-    createSession, 
-    getSession, 
-    deleteSession 
+const {
+    createSession,
+    getSession,
+    deleteSession
 } = require("./sessions");
-const { 
+const {
     createNextcloudAdministrator,
     checkNextcloud
 } = require("./nextcloud");
-
-//helper function to retrieve session token from requests cookies
-function getSessionToken(req) {
-    const cookies = req.headers.cookie || "";
-
-    const sessionCookie = cookies.split(";").find(cookie =>
-        cookie.trim().startsWith("session=")
-    );
-
-    if (!sessionCookie) {
-        return null;
-    }
-
-    return sessionCookie.trim().substring("session=".length);
-}
 
 const server = http.createServer(async (req, res) => {
 
@@ -53,16 +40,31 @@ const server = http.createServer(async (req, res) => {
                 const { username, password } = JSON.parse(body);
 
                 //check for provided credentials
-                if (typeof username !== "string" || typeof password !== "string" || username.trim().length === 0 || password.length < 8) {
+                if (typeof username !== "string" || typeof password !== "string") {
                     res.writeHead(400, {
                         "Content-Type": "application/json"
                     });
 
                     res.end(JSON.stringify({
-                        error: "A username and password with at least 8 characters are required."
+                        error: "A username and password are required."
                     }));
                     return;
                 }
+
+                //validate username and password requirements
+                const validationError = validateAccount(username, password, password);
+
+                if (validationError) {
+                    res.writeHead(400, {
+                        "Content-Type": "application/json"
+                    });
+
+                    res.end(JSON.stringify({
+                        error: validationError
+                    }));
+                    return;
+                }
+
                 createNextcloudAdministrator(username.trim(), password)
                     .then(() => {
                         //create the dashboard admin after nextcloud suceeds
@@ -131,18 +133,14 @@ const server = http.createServer(async (req, res) => {
                     passwordProvided: typeof password === "string"
                 });
 
-                //validate provided info
-                if (typeof username !== "string" ||
-                    typeof password !== "string" ||
-                    username.trim().length === 0 ||
-                    password.length === 0
-                ) {
+                //validate provided creds
+                if (typeof username !== "string" || typeof password !== "string") {
                     res.writeHead(400, {
                         "Content-Type": "application/json"
                     });
 
                     res.end(JSON.stringify({
-                        error: "Username and password are required"
+                        error: "A username and password are required."
                     }));
 
                     return;
@@ -326,7 +324,8 @@ const server = http.createServer(async (req, res) => {
         "/": ["index.html", "text/html"],
         "/index.html": ["index.html", "text/html"],
         "/style.css": ["style.css", "text/css"],
-        "/script.js": ["script.js", "text/javascript"]
+        "/script.js": ["script.js", "text/javascript"],
+        "/validation.js": ["validation.js", "text/javascript"]
     };
 
     const requestedFile = files[req.url];
@@ -362,6 +361,10 @@ const server = http.createServer(async (req, res) => {
 
 const HOST = process.env.HOST || "127.0.0.1";
 
-server.listen(3000, HOST, () => {
-    console.log(`Backend running at http://${HOST}:3000`);
-});
+if (require.main === module) {
+    server.listen(3000, HOST, () => {
+        console.log(`Backend running at http://${HOST}:3000`);
+    });
+}
+
+module.exports = server;
