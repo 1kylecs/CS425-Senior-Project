@@ -52,3 +52,7 @@ docker system prune -af --volumes
 echo
 echo "Docker cleanup complete!"
 echo "Docker Engine and Docker Compose are still installed."
+
+echo
+echo "Disabling Node website"
+killall node

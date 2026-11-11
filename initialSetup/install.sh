@@ -32,7 +32,7 @@ echo "-------------------------------------------------------"
 # Update the package index and install the tools needed to
 # download Docker's signing key and verify its packages.
 apt-get update
-apt-get install -y ca-certificates curl jq iproute2
+apt-get install -y ca-certificates curl jq iproute2 nodejs
 
 echo ""
 echo "-------------------------------------------------------"
@@ -159,3 +159,10 @@ docker compose --env-file "$SCRIPT_DIR/default-creds.env" \
 
 echo ""
 echo "Nextcloud web interface: http://localhost:8080"
+
+
+echo ""
+echo "Starting Admin web page..."
+env HOST=0.0.0.0 node $SCRIPT_DIR/../server/server.js &
+# add the & so it runs in background.
+

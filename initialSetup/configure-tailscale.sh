@@ -4,7 +4,7 @@ set -euo pipefail
 
 # Configuration
 CONTAINER="tailscale"
-TAILSCALE_HOSTNAME="mycloud"
+TAILSCALE_HOSTNAME="mycloud" #Allow user to set this eventually
 LOGIN_TIMEOUT=300
 POLL_INTERVAL=3
 SERVE_RETRIES=3
